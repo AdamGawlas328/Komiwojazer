@@ -19,7 +19,7 @@ std::ostream& operator<<(std::ostream& os, const CostMatrix& cm) {
 
 /* PART 1 */
 
-/**
+/** @TODO:
  * Create path from unsorted path and last 2x2 cost matrix.
  * @return The vector of consecutive vertex.
  */
@@ -148,10 +148,30 @@ cost_t CostMatrix::get_vertex_cost(std::size_t row, std::size_t col) const {
  * @return The coordinates of the next vertex.
  */
 NewVertex StageState::choose_new_vertex() {
-    throw;  // TODO: Implement it!
+    cost_t max_cost = 0;
+    vertex_t max_coordinates(0, 0);
+    for(std::size_t i = 0; i < matrix_.size(); i++){
+        for(std::size_t j = 0; j < matrix_.size(); j++){
+            if(j == i){
+                continue;
+            }
+            if(matrix_[i][j] != 0){
+                continue;
+            }
+            cost_t current_cost = matrix_.get_vertex_cost(i, j);
+            if(current_cost > max_cost){
+                max_cost = current_cost;
+                max_coordinates.row = i;
+                max_coordinates.col = j;
+            }
+        }
+    }
+
+    NewVertex outVertex(max_coordinates, max_cost);
+    return outVertex;
 }
 
-/**
+/**@TODO:
  * Update the cost matrix with the new vertex.
  * @param new_vertex
  */
@@ -165,7 +185,10 @@ void StageState::update_cost_matrix(vertex_t new_vertex) {
  * @return The sum of reduced values.
  */
 cost_t StageState::reduce_cost_matrix() {
-    throw;  // TODO: Implement it!
+    cost_t rows = matrix_.reduce_rows();
+    cost_t cols = matrix_.reduce_cols();
+
+    return cols + rows;
 }
 
 /**
@@ -254,7 +277,7 @@ tsp_solutions_t solve_tsp(const cost_matrix_t& cm) {
             }
 
             // 1. Reduce the matrix in rows and columns.
-            cost_t new_cost = 0; // @TODO (KROK 1)
+            cost_t new_cost = left_branch.reduce_cost_matrix();; //(KROK 1)
 
             // 2. Update the lower bound and check the break condition.
             left_branch.update_lower_bound(new_cost);
@@ -263,7 +286,7 @@ tsp_solutions_t solve_tsp(const cost_matrix_t& cm) {
             }
 
             // 3. Get new vertex and the cost of not choosing it.
-            NewVertex new_vertex = NewVertex(); // @TODO (KROK 2)
+            NewVertex new_vertex = left_branch.choose_new_vertex(); // (KROK 2)
 
             // 4. @TODO Update the path - use append_to_path method.
 
@@ -286,3 +309,5 @@ tsp_solutions_t solve_tsp(const cost_matrix_t& cm) {
 
     return filter_solutions(solutions); // Filter solutions to find only optimal ones.
 }
+
+// Adam Gawlas, 421595

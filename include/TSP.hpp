@@ -71,11 +71,11 @@ public:
     StageState(const CostMatrix& m, std::vector<vertex_t> p = {},
             cost_t lb = 0) : matrix_(m), unsorted_path_(p), lower_bound_(lb) {};
 
-    path_t get_path();
-    std::size_t get_level() const { return unsorted_path_.size(); }
+    path_t get_path() override;
+    std::size_t get_level() const override { return unsorted_path_.size(); }
 
     void update_lower_bound(cost_t reduced_values) { lower_bound_ += reduced_values; }
-    cost_t get_lower_bound() const { return lower_bound_; }
+    cost_t get_lower_bound() const override { return lower_bound_; }
     void reset_lower_bound() { lower_bound_ = 0; }
 
     const CostMatrix& get_matrix() const { return matrix_; };
@@ -100,3 +100,5 @@ tsp_solutions_t filter_solutions(tsp_solutions_t solutions);
 tsp_solutions_t solve_tsp(const cost_matrix_t& cm);
 
 #endif //IMPLEMENTATION_TSP_HPP
+
+// Adam Gawlas, 421595

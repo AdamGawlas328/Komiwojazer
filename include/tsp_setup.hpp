@@ -29,6 +29,9 @@ public:
     virtual path_t get_path() = 0;
     virtual std::size_t get_level() const = 0;
     virtual cost_t get_lower_bound() const = 0;
+    virtual ~IStageState() = default;
 };
 
 #endif //IMPLEMENTATION_INFINITY_HPP
+
+// Adam Gawlas, 421595

@@ -53,3 +53,5 @@ int main() {
 
     return EXIT_SUCCESS;
 }
+
+// Adam Gawlas, 421595
